@@ -143,16 +143,28 @@ func (p *Parser) scanIdentSurroundedQuotationMark() (Token, string) {
 			break
 		}
 
-		if escaped == true {
+		// If the current character is escaped and it is NOT an escape sequence
+		// set character handling back to normal.
+		if escaped == true && tok != ESCAPE_SEQUENCE {
 			escaped = false
 		}
 
-		if tok == ESCAPE_SEQUENCE {
+		// If we have an escape sequence and the current state is not escaped
+		// mark the next character as escaped.
+		if tok == ESCAPE_SEQUENCE && escaped == false {
 			escaped = true
 			continue
 		}
 
 		buf.WriteString(lit)
+
+		// If the current character is escaped and it is a backslash
+		// reset the character handing.
+		// This is only triggered if you want to add a \ into a key or a value.
+		// Then you have to add "\\".
+		if escaped == true && tok == ESCAPE_SEQUENCE {
+			escaped = false
+		}
 	}
 
 	return IDENT, buf.String()
