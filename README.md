@@ -23,7 +23,7 @@ TODO
 
 ## Inspiration
 
-The code and project idea is heavily inspired and driven by @benbjohnson article [Handwritten Parsers & Lexers in Go](https://blog.gopheracademy.com/advent-2014/parsers-lexers/) and his example [sql-parser](https://github.com/benbjohnson/sql-parser). Thank you Ben!
+The code and project idea is heavily inspired and driven by [@benbjohnson](https://github.com/benbjohnson) article [Handwritten Parsers & Lexers in Go](https://blog.gopheracademy.com/advent-2014/parsers-lexers/) and his example [sql-parser](https://github.com/benbjohnson/sql-parser). Thank you Ben!
 
 ## Parser in other languages
 
