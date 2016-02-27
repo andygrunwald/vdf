@@ -17,7 +17,7 @@ const (
 	CURLY_BRACE_OPEN  // {
 	CURLY_BRACE_CLOSE // }
 	QUOTATION_MARK    // "
-	ESCAPE_SEQUENCE // \
+	ESCAPE_SEQUENCE   // \
 )
 
 var eof = rune(0)

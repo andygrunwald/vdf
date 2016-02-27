@@ -44,7 +44,7 @@ func (s *Scanner) Scan(respectWhitespace bool) (tok Token, lit string) {
 	} else if respectWhitespace == true && isWhitespace(ch) {
 		return WS, string(ch)
 
-	// If we see a letter then consume as an ident or reserved word.
+		// If we see a letter then consume as an ident or reserved word.
 	} else if isLetter(ch) || isDigit(ch) {
 		s.unread()
 		return s.scanIdent()
