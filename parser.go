@@ -132,13 +132,24 @@ func (p *Parser) parseMap() map[string]interface{} {
 
 func (p *Parser) scanIdentSurroundedQuotationMark() (Token, string) {
 	var buf bytes.Buffer
+	escaped := false
 
 	for {
 		tok, lit := p.scan(true)
-		if tok == QUOTATION_MARK {
+
+		if tok == QUOTATION_MARK && escaped == false {
 			// We don`t unscan here, because
 			// we don`t need this quotation mark anymore.
 			break
+		}
+
+		if escaped == true {
+			escaped = false
+		}
+
+		if tok == ESCAPE_SEQUENCE {
+			escaped = true
+			continue
 		}
 
 		buf.WriteString(lit)

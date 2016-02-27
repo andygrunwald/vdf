@@ -54,6 +54,8 @@ func (s *Scanner) Scan(respectWhitespace bool) (tok Token, lit string) {
 	switch ch {
 	case eof:
 		return EOF, ""
+	case '\\':
+		return ESCAPE_SEQUENCE, string(ch)
 	case '{':
 		return CURLY_BRACE_OPEN, string(ch)
 	case '}':
