@@ -19,8 +19,52 @@ $ go test -v
 
 ## Usage
 
-TODO
+Given a file named `example.vdf` with content:
 
+```
+"Example"
+{
+	"TimeNextStatsReport"      "1234567890"
+	"ContentStatsID"           "-7123456789012345678"
+}
+```
+
+Can be parsed with this Go code:
+
+```go
+package main
+
+import (
+	"os"
+	"log"
+	"github.com/andygrunwald/vdf"
+)
+
+func main() {
+	f, err := os.Open("./example.vdf")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	p := vdf.NewParser(f)
+	m, err := p.Parse()
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(m)
+}
+```
+
+And it will output:
+
+```
+map[
+	Example:map[
+		TimeNextStatsReport:1234567890
+		ContentStatsID:-7123456789012345678
+	]
+]
+```
 ## Inspiration
 
 The code and project idea is heavily inspired and driven by [@benbjohnson](https://github.com/benbjohnson) article [Handwritten Parsers & Lexers in Go](https://blog.gopheracademy.com/advent-2014/parsers-lexers/) and his example [sql-parser](https://github.com/benbjohnson/sql-parser). Thank you Ben!
