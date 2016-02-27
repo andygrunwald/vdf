@@ -1,5 +1,6 @@
 # vdf
 
+[![Build Status](https://travis-ci.org/andygrunwald/vdf.svg?branch=master)](https://travis-ci.org/andygrunwald/vdf)
 [![GoDoc](https://godoc.org/github.com/andygrunwald/vdf?status.svg)](https://godoc.org/github.com/andygrunwald/vdf)
 
 A Lexer and Parser for [Valves Data Format (known as vdf)](https://developer.valvesoftware.com/wiki/KeyValues) written in Go.
