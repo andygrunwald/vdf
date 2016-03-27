@@ -126,8 +126,6 @@ func (p *Parser) parseMap() map[string]interface{} {
 			return m
 		}
 	}
-
-	return m
 }
 
 func (p *Parser) scanIdentSurroundedQuotationMark() (Token, string) {
