@@ -55,16 +55,16 @@ func (s *Scanner) Scan(respectWhitespace bool) (tok Token, lit string) {
 	case eof:
 		return EOF, ""
 	case '\\':
-		return ESCAPE_SEQUENCE, string(ch)
+		return EscapeSequence, string(ch)
 	case '{':
-		return CURLY_BRACE_OPEN, string(ch)
+		return CurlyBraceOpen, string(ch)
 	case '}':
-		return CURLY_BRACE_CLOSE, string(ch)
+		return CurlyBraceClose, string(ch)
 	case '"':
-		return QUOTATION_MARK, string(ch)
+		return QuotationMark, string(ch)
 	}
 
-	return ILLEGAL, string(ch)
+	return Illegal, string(ch)
 }
 
 // scanWhitespace consumes the current rune and all contiguous whitespace.
@@ -109,7 +109,7 @@ func (s *Scanner) scanIdent() (tok Token, lit string) {
 	}
 
 	// Otherwise return as a regular identifier.
-	return IDENT, buf.String()
+	return Ident, buf.String()
 }
 
 func isWhitespace(ch rune) bool {

@@ -62,13 +62,13 @@ func (p *Parser) Parse() (map[string]interface{}, error) {
 
 	// The first part is a simple ident (as a main map key)
 	tok, lit := p.scanMapKey()
-	if tok != IDENT {
+	if tok != Ident {
 		return nil, fmt.Errorf("Found %q, expected an ident as a first part", lit)
 	}
 	key = lit
 
 	tok, lit = p.scanIgnoreWhitespace()
-	if tok != CURLY_BRACE_OPEN {
+	if tok != CurlyBraceOpen {
 		return nil, fmt.Errorf("Found %q, expected an ident as a first part", lit)
 	}
 
@@ -82,13 +82,13 @@ func (p *Parser) scanMapKey() (Token, string) {
 	tok, lit := p.scanIgnoreWhitespace()
 
 	// Get the key
-	if tok == QUOTATION_MARK {
+	if tok == QuotationMark {
 		return p.scanIdentSurroundedQuotationMark()
-	} else if tok == IDENT {
+	} else if tok == Ident {
 		return tok, lit
 	}
 
-	return ILLEGAL, lit
+	return Illegal, lit
 }
 
 func (p *Parser) parseMap() map[string]interface{} {
@@ -97,7 +97,7 @@ func (p *Parser) parseMap() map[string]interface{} {
 
 	// The first part should be a open curly brace
 	tok, _ := p.scanIgnoreWhitespace()
-	if tok != CURLY_BRACE_OPEN {
+	if tok != CurlyBraceOpen {
 		return m
 	}
 
@@ -105,11 +105,11 @@ func (p *Parser) parseMap() map[string]interface{} {
 		// At first: A key
 		tok, lit := p.scanIgnoreWhitespace()
 		switch tok {
-		case QUOTATION_MARK:
+		case QuotationMark:
 			_, key = p.scanIdentSurroundedQuotationMark()
-		case IDENT:
+		case Ident:
 			key = lit
-		case CURLY_BRACE_CLOSE:
+		case CurlyBraceClose:
 			return m
 		default:
 			return m
@@ -118,14 +118,14 @@ func (p *Parser) parseMap() map[string]interface{} {
 		// After this: A value or a map again
 		tok, lit = p.scanIgnoreWhitespace()
 		switch tok {
-		case QUOTATION_MARK:
+		case QuotationMark:
 			_, m[key] = p.scanIdentSurroundedQuotationMark()
-		case IDENT:
+		case Ident:
 			m[key] = lit
-		case CURLY_BRACE_OPEN:
+		case CurlyBraceOpen:
 			p.unscan()
 			m[key] = p.parseMap()
-		case CURLY_BRACE_CLOSE:
+		case CurlyBraceClose:
 			return m
 		default:
 			return m
@@ -140,7 +140,7 @@ func (p *Parser) scanIdentSurroundedQuotationMark() (Token, string) {
 	for {
 		tok, lit := p.scan(true)
 
-		if tok == QUOTATION_MARK && escaped == false {
+		if tok == QuotationMark && escaped == false {
 			// We don`t unscan here, because
 			// we don`t need this quotation mark anymore.
 			break
@@ -148,13 +148,13 @@ func (p *Parser) scanIdentSurroundedQuotationMark() (Token, string) {
 
 		// If the current character is escaped and it is NOT an escape sequence
 		// set character handling back to normal.
-		if escaped == true && tok != ESCAPE_SEQUENCE {
+		if escaped == true && tok != EscapeSequence {
 			escaped = false
 		}
 
 		// If we have an escape sequence and the current state is not escaped
 		// mark the next character as escaped.
-		if tok == ESCAPE_SEQUENCE && escaped == false {
+		if tok == EscapeSequence && escaped == false {
 			escaped = true
 			continue
 		}
@@ -165,10 +165,10 @@ func (p *Parser) scanIdentSurroundedQuotationMark() (Token, string) {
 		// reset the character handing.
 		// This is only triggered if you want to add a \ into a key or a value.
 		// Then you have to add "\\".
-		if escaped == true && tok == ESCAPE_SEQUENCE {
+		if escaped == true && tok == EscapeSequence {
 			escaped = false
 		}
 	}
 
-	return IDENT, buf.String()
+	return Ident, buf.String()
 }

@@ -7,9 +7,9 @@ type Token int
 const (
 	_ Token = iota
 
-	// ILLEGAL represents a token that we
+	// Illegal represents a token that we
 	// don`t know in contect of the VDF format
-	ILLEGAL
+	Illegal
 
 	// EOF represents the End of File token.
 	// This is used if the file is end
@@ -19,21 +19,21 @@ const (
 	// This can be a space or a tab.
 	WS
 
-	// IDENT represents a key or a value.
+	// Ident represents a key or a value.
 	// Typically this is a simple string
-	IDENT // Keys or values
+	Ident
 
-	// CURLY_BRACE_OPEN represents a open curly brace "{"
-	CURLY_BRACE_OPEN
+	// CurlyBraceOpen represents a open curly brace "{"
+	CurlyBraceOpen
 
-	// CURLY_BRACE_CLOSE represents a close curly brace "}"
-	CURLY_BRACE_CLOSE
+	// CurlyBraceClose represents a close curly brace "}"
+	CurlyBraceClose
 
-	// QUOTATION_MARK represents a quote mark '"'
-	QUOTATION_MARK
+	// QuotationMark represents a quote mark '"'
+	QuotationMark
 
-	// ESCAPE_SEQUENCE represents an escape character "\"
-	ESCAPE_SEQUENCE
+	// EscapeSequence represents an escape character "\"
+	EscapeSequence
 )
 
 var eof = rune(0)

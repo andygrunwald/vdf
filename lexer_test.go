@@ -16,20 +16,20 @@ func TestScanner_Scan(t *testing.T) {
 	}{
 		// Special tokens (EOF, ILLEGAL, WS)
 		{s: ``, tok: vdf.EOF},
-		{s: `#`, tok: vdf.ILLEGAL, lit: `#`},
+		{s: `#`, tok: vdf.Illegal, lit: `#`},
 		{s: ` `, tok: vdf.WS, lit: " "},
 		{s: "\t", tok: vdf.WS, lit: "\t"},
 		{s: "\n", tok: vdf.WS, lit: "\n"},
 
 		// Misc characters
-		{s: `{`, tok: vdf.CURLY_BRACE_OPEN, lit: "{"},
-		{s: `}`, tok: vdf.CURLY_BRACE_CLOSE, lit: "}"},
-		{s: `"`, tok: vdf.QUOTATION_MARK, lit: "\""},
-		{s: `\`, tok: vdf.ESCAPE_SEQUENCE, lit: "\\"},
+		{s: `{`, tok: vdf.CurlyBraceOpen, lit: "{"},
+		{s: `}`, tok: vdf.CurlyBraceClose, lit: "}"},
+		{s: `"`, tok: vdf.QuotationMark, lit: "\""},
+		{s: `\`, tok: vdf.EscapeSequence, lit: "\\"},
 
 		// Identifiers
-		{s: `foo`, tok: vdf.IDENT, lit: `foo`},
-		{s: `Zx12_3U_-`, tok: vdf.IDENT, lit: `Zx12_3U_`},
+		{s: `foo`, tok: vdf.Ident, lit: `foo`},
+		{s: `Zx12_3U_-`, tok: vdf.Ident, lit: `Zx12_3U_`},
 	}
 
 	for i, tt := range tests {
