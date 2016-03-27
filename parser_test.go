@@ -11,9 +11,9 @@ import (
 // Ensure the parser can parse strings into Statement ASTs.
 func TestParser_ParseStatement(t *testing.T) {
 	var tests = []struct {
-		s    string
-		m map[string]interface{}
-		err  error
+		s   string
+		m   map[string]interface{}
+		err error
 	}{
 		// Single field statement
 		{
@@ -25,7 +25,7 @@ func TestParser_ParseStatement(t *testing.T) {
 			m: map[string]interface{}{
 				"Example": map[string]interface{}{
 					"TimeNextStatsReport": "1234567890",
-					"ContentStatsID": "-7123456789012345678",
+					"ContentStatsID":      "-7123456789012345678",
 				},
 			},
 		},
@@ -53,8 +53,8 @@ func TestParser_ParseStatement(t *testing.T) {
 						"foo": "Q79v5tbar",
 					},
 					"data": map[string]interface{}{
-						"val": "1",
-						"map": "2",
+						"val":    "1",
+						"map":    "2",
 						"player": "3",
 					},
 				},
@@ -84,8 +84,8 @@ func TestParser_ParseStatement(t *testing.T) {
 						"foo": "Q79v5tbar",
 					},
 					"data": map[string]interface{}{
-						"v\\al": "1",
-						"map": "2",
+						"v\\al":    "1",
+						"map":      "2",
 						"pl\"ayer": "3",
 					},
 				},
