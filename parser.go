@@ -51,6 +51,11 @@ func (p *Parser) scanIgnoreWhitespace() (Token, string) {
 	return tok, lit
 }
 
+// Parse is the main entry point of the vdf parser.
+// If parsed the complete VDF content and returns
+// a map as a key / value pair.
+// The value is a string (normal value) or a map[string]interface{}
+// again if there is a nested structure.
 func (p *Parser) Parse() (map[string]interface{}, error) {
 	m := make(map[string]interface{})
 	key := ""
