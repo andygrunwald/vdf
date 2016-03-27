@@ -1,7 +1,9 @@
 # vdf
 
-[![Build Status](https://travis-ci.org/andygrunwald/vdf.svg?branch=master)](https://travis-ci.org/andygrunwald/vdf)
 [![GoDoc](https://godoc.org/github.com/andygrunwald/vdf?status.svg)](https://godoc.org/github.com/andygrunwald/vdf)
+[![Build Status](https://travis-ci.org/andygrunwald/vdf.svg?branch=master)](https://travis-ci.org/andygrunwald/vdf)
+[![Go Report Card](https://goreportcard.com/badge/github.com/andygrunwald/vdf)](https://goreportcard.com/report/github.com/andygrunwald/vdf)
+[![Coverage Status](https://coveralls.io/repos/github/andygrunwald/vdf/badge.svg?branch=master)](https://coveralls.io/github/andygrunwald/vdf?branch=master)
 
 A Lexer and Parser for [Valves Data Format (known as vdf)](https://developer.valvesoftware.com/wiki/KeyValues) written in Go.
 
@@ -17,7 +19,7 @@ $ go get github.com/andygrunwald/vdf
 
 ```
 $ cd $GOPATH/src/github.com/andygrunwald/vdf
-$ go test -v
+$ go test -v ./...
 ```
 
 ## Usage
