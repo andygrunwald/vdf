@@ -40,9 +40,10 @@ Can be parsed with this Go code:
 package main
 
 import (
-	"os"
-	"log"
+	"fmt"
 	"github.com/andygrunwald/vdf"
+	"log"
+	"os"
 )
 
 func main() {
@@ -58,6 +59,7 @@ func main() {
 	}
 	fmt.Println(m)
 }
+
 ```
 
 And it will output:
