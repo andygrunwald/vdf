@@ -58,7 +58,7 @@ func (p *Parser) scanIgnoreWSAndComments() (Token, string) {
 	if tok == CommentDoubleSlash {
 		// Scan until the next line ending
 		for {
-			tok, _ := p.scan(true)
+			tok, _ = p.scan(true)
 			if tok == EOL {
 				break
 			}
