@@ -20,6 +20,7 @@ func TestScanner_Scan(t *testing.T) {
 		{s: ` `, tok: vdf.WS, lit: " "},
 		{s: "\t", tok: vdf.WS, lit: "\t"},
 		{s: "\n", tok: vdf.WS, lit: "\n"},
+		{s: "\r", tok: vdf.WS, lit: "\r"},
 
 		// Misc characters
 		{s: `{`, tok: vdf.CurlyBraceOpen, lit: "{"},
