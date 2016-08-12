@@ -91,6 +91,86 @@ func TestParser_ParseStatement(t *testing.T) {
 				},
 			},
 		},
+		{
+			s: `"Root"
+{
+ attr1       "hey-ho"
+ "attr2"       ho
+ "map1"
+ {
+   // This is a comment
+   "foo"       "Q79v5tbar"
+ }
+ "data"
+ {
+   "v\\al"       "1"
+   "map"       "2"
+   "pl\"ayer"    "3"
+ }
+}`,
+			m: map[string]interface{}{
+				"Root": map[string]interface{}{
+					"attr1": "hey-ho",
+					"attr2": "ho",
+					"map1": map[string]interface{}{
+						"foo": "Q79v5tbar",
+					},
+					"data": map[string]interface{}{
+						"v\\al":    "1",
+						"map":      "2",
+						"pl\"ayer": "3",
+					},
+				},
+			},
+		},
+		{
+			s: `"Root"
+{
+ attr1       "hey-ho"
+ "attr2"       ho
+ "map1"
+ {
+   // Comment line first
+   // Comment line second
+   "foo"       "Q79v5tbar"
+   // Comment line third
+ }
+ "data"
+ {
+   "v\\al"       "1"
+   "map"       "2"
+   "pl\"ayer"    "3"
+ }
+}`,
+			m: map[string]interface{}{
+				"Root": map[string]interface{}{
+					"attr1": "hey-ho",
+					"attr2": "ho",
+					"map1": map[string]interface{}{
+						"foo": "Q79v5tbar",
+					},
+					"data": map[string]interface{}{
+						"v\\al":    "1",
+						"map":      "2",
+						"pl\"ayer": "3",
+					},
+				},
+			},
+		},
+		{
+			s: `// Root comment line
+"Root"
+{
+ attr1       "hey-ho"
+ "attr2"       ho
+}`,
+			m: map[string]interface{}{
+				"Root": map[string]interface{}{
+					"attr1": "hey-ho",
+					"attr2": "ho",
+				},
+			},
+		},
 	}
 
 	for i, tt := range tests {

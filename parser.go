@@ -42,12 +42,30 @@ func (p *Parser) scan(respectWhitespace bool) (Token, string) {
 // unscan pushes the previously read token back onto the buffer.
 func (p *Parser) unscan() { p.buf.n = 1 }
 
-// scanIgnoreWhitespace scans the next non-whitespace token.
-func (p *Parser) scanIgnoreWhitespace() (Token, string) {
+// scanIgnoreWSAndComments ignores whitespace, end-of-line and comment tokens
+// during scanning. It returns the next token + string that is not WS, EOL or CommentDoubleSlash
+func (p *Parser) scanIgnoreWSAndComments() (Token, string) {
 	tok, lit := p.scan(false)
+
+	// If we have a whitespace, just continue scanning until the next token appears
 	if tok == WS {
 		tok, lit = p.scan(false)
 	}
+
+	// If we have a comment, we need to drop the complete line, because
+	// the text would be detect as an ident. But the text after a "//"
+	// is part of the comment. So we ignore the complete line.
+	if tok == CommentDoubleSlash {
+		// Scan until the next line ending
+		for {
+			tok, _ := p.scan(true)
+			if tok == EOL {
+				break
+			}
+		}
+		return p.scanIgnoreWSAndComments()
+	}
+
 	return tok, lit
 }
 
@@ -67,7 +85,7 @@ func (p *Parser) Parse() (map[string]interface{}, error) {
 	}
 	key = lit
 
-	tok, lit = p.scanIgnoreWhitespace()
+	tok, lit = p.scanIgnoreWSAndComments()
 	if tok != CurlyBraceOpen {
 		return nil, fmt.Errorf("Found %q, expected an ident as a first part", lit)
 	}
@@ -79,7 +97,7 @@ func (p *Parser) Parse() (map[string]interface{}, error) {
 }
 
 func (p *Parser) scanMapKey() (Token, string) {
-	tok, lit := p.scanIgnoreWhitespace()
+	tok, lit := p.scanIgnoreWSAndComments()
 
 	// Get the key
 	if tok == QuotationMark {
@@ -96,14 +114,14 @@ func (p *Parser) parseMap() map[string]interface{} {
 	key := ""
 
 	// The first part should be a open curly brace
-	tok, _ := p.scanIgnoreWhitespace()
+	tok, _ := p.scanIgnoreWSAndComments()
 	if tok != CurlyBraceOpen {
 		return m
 	}
 
 	for {
 		// At first: A key
-		tok, lit := p.scanIgnoreWhitespace()
+		tok, lit := p.scanIgnoreWSAndComments()
 		switch tok {
 		case QuotationMark:
 			_, key = p.scanIdentSurroundedQuotationMark()
@@ -111,12 +129,17 @@ func (p *Parser) parseMap() map[string]interface{} {
 			key = lit
 		case CurlyBraceClose:
 			return m
+
+		case CommentDoubleSlash:
+			fmt.Println("KILLER")
+			//
+			return m
 		default:
 			return m
 		}
 
 		// After this: A value or a map again
-		tok, lit = p.scanIgnoreWhitespace()
+		tok, lit = p.scanIgnoreWSAndComments()
 		switch tok {
 		case QuotationMark:
 			_, m[key] = p.scanIdentSurroundedQuotationMark()

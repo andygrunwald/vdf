@@ -37,17 +37,26 @@ func (s *Scanner) Scan(respectWhitespace bool) (tok Token, lit string) {
 	ch := s.read()
 
 	// If we see whitespace then consume all contiguous whitespace.
-	if respectWhitespace == false && isWhitespace(ch) {
+	if respectWhitespace == false && (isWhitespace(ch) || isLineEnding(ch)) {
 		s.unread()
 		return s.scanWhitespace()
 
+		// If we see a whitespace, return it
 	} else if respectWhitespace == true && isWhitespace(ch) {
 		return WS, string(ch)
+
+		// If we see a line ending, return it
+	} else if respectWhitespace == true && isLineEnding(ch) {
+		return EOL, string(ch)
 
 		// If we see a letter then consume as an ident or reserved word.
 	} else if isLetter(ch) || isDigit(ch) {
 		s.unread()
 		return s.scanIdent()
+
+		// If we see a "//" this line is a comment
+	} else if isComment(ch, s) {
+		return CommentDoubleSlash, string(ch) + string(ch)
 	}
 
 	// Otherwise read the individual character.
@@ -113,7 +122,11 @@ func (s *Scanner) scanIdent() (tok Token, lit string) {
 }
 
 func isWhitespace(ch rune) bool {
-	return ch == ' ' || ch == '\t' || ch == '\n' || ch == '\r'
+	return ch == ' ' || ch == '\t'
+}
+
+func isLineEnding(ch rune) bool {
+	return ch == '\n' || ch == '\r'
 }
 
 func isLetter(ch rune) bool {
@@ -123,4 +136,19 @@ func isLetter(ch rune) bool {
 // isDigit returns true if the rune is a digit.
 func isDigit(ch rune) bool {
 	return (ch >= '0' && ch <= '9')
+}
+
+// isComment returns true if this line starts with a comment ("//")
+func isComment(ch rune, s *Scanner) bool {
+	if ch != '/' {
+		return false
+	}
+
+	nextRune := s.read()
+	if nextRune != '/' {
+		s.unread()
+		return false
+	}
+
+	return true
 }

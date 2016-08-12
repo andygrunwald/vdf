@@ -27,6 +27,7 @@ func TestScanner_Scan(t *testing.T) {
 		{s: `}`, tok: vdf.CurlyBraceClose, lit: "}"},
 		{s: `"`, tok: vdf.QuotationMark, lit: "\""},
 		{s: `\`, tok: vdf.EscapeSequence, lit: "\\"},
+		{s: "//", tok: vdf.CommentDoubleSlash, lit: "//"},
 
 		// Identifiers
 		{s: `foo`, tok: vdf.Ident, lit: `foo`},
