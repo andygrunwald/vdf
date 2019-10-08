@@ -3,8 +3,7 @@ package vdf_test
 import (
 	"strings"
 	"testing"
-
-	"github.com/andygrunwald/vdf"
+	"vdf"
 )
 
 // Ensure the scanner can scan tokens correctly.

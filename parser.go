@@ -147,7 +147,7 @@ func (p *Parser) parseMap() map[string]interface{} {
 			m[key] = lit
 		case CurlyBraceOpen:
 			p.unscan()
-			m[key] = p.parseMap()
+			mergeMap(m, p.parseMap(), key)
 		case CurlyBraceClose:
 			return m
 		default:
@@ -194,4 +194,18 @@ func (p *Parser) scanIdentSurroundedQuotationMark() (Token, string) {
 	}
 
 	return Ident, buf.String()
+}
+
+// VDF files can contain duplicates of keys, when this occurs we need to merge the existing map and the returned map
+func mergeMap(m, r map[string]interface{}, key string) map[string]interface{} {
+
+	if _, ok:= m[key]; !ok {
+		m[key] = r
+	} else {
+		for k, v := range r {
+			m[key].(map[string]interface{})[k] = v
+		}
+	}
+
+	return m
 }

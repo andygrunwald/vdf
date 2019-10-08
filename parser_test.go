@@ -4,8 +4,7 @@ import (
 	"reflect"
 	"strings"
 	"testing"
-
-	"github.com/andygrunwald/vdf"
+	"vdf"
 )
 
 // Ensure the parser can parse strings into Statement ASTs.
@@ -170,6 +169,27 @@ func TestParser_ParseStatement(t *testing.T) {
 					"attr2": "ho",
 				},
 			},
+		},
+		{
+			s: `"Root"
+{
+ "map"
+ {
+   "attr1" "hello"
+ }
+ "map"
+ {
+   "attr2" "world"
+ }
+}`,
+		m: map[string]interface{}{
+			"Root": map[string]interface{}{
+				"map": map[string]interface{}{
+					"attr1": "hello",
+					"attr2": "world",
+				},
+			},
+		},
 		},
 	}
 
