@@ -1,10 +1,9 @@
-package vdf_test
+package vdf
 
 import (
 	"reflect"
 	"strings"
 	"testing"
-	"vdf"
 )
 
 // Ensure the parser can parse strings into Statement ASTs.
@@ -194,7 +193,7 @@ func TestParser_ParseStatement(t *testing.T) {
 	}
 
 	for i, tt := range tests {
-		m, err := vdf.NewParser(strings.NewReader(tt.s)).Parse()
+		m, err := NewParser(strings.NewReader(tt.s)).Parse()
 		if !reflect.DeepEqual(tt.err, (err)) {
 			t.Errorf("%d. %q: error mismatch:\n  exp=%s\n  got=%s\n\n", i, tt.s, tt.err, err)
 		} else if tt.err == nil && !reflect.DeepEqual(tt.m, m) {
