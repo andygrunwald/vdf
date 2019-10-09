@@ -1,4 +1,5 @@
-package vdf
+// Test taken from https://github.com/andygrunwald/vdf
+package main
 
 import (
 	"reflect"
@@ -61,8 +62,8 @@ func TestParser_ParseStatement(t *testing.T) {
 		{
 			s: `"Root"
 {
- attr1       "hey-ho"
- "attr2"       ho
+ "attr1"       "hey-ho"
+ "attr2"       "ho"
  "map1"
  {
    "foo"       "Q79v5tbar"
@@ -82,9 +83,9 @@ func TestParser_ParseStatement(t *testing.T) {
 						"foo": "Q79v5tbar",
 					},
 					"data": map[string]interface{}{
-						"v\\al":    "1",
+						`v\\al`:    "1",
 						"map":      "2",
-						"pl\"ayer": "3",
+						`pl\"ayer`: "3",
 					},
 				},
 			},
@@ -92,8 +93,8 @@ func TestParser_ParseStatement(t *testing.T) {
 		{
 			s: `"Root"
 {
- attr1       "hey-ho"
- "attr2"       ho
+ "attr1"       "hey-ho"
+ "attr2"       "ho"
  "map1"
  {
    // This is a comment
@@ -114,9 +115,9 @@ func TestParser_ParseStatement(t *testing.T) {
 						"foo": "Q79v5tbar",
 					},
 					"data": map[string]interface{}{
-						"v\\al":    "1",
+						`v\\al`:    "1",
 						"map":      "2",
-						"pl\"ayer": "3",
+						`pl\"ayer`: "3",
 					},
 				},
 			},
@@ -124,8 +125,8 @@ func TestParser_ParseStatement(t *testing.T) {
 		{
 			s: `"Root"
 {
- attr1       "hey-ho"
- "attr2"       ho
+ "attr1"       "hey-ho"
+ "attr2"       "ho"
  "map1"
  {
    // Comment line first
@@ -148,9 +149,9 @@ func TestParser_ParseStatement(t *testing.T) {
 						"foo": "Q79v5tbar",
 					},
 					"data": map[string]interface{}{
-						"v\\al":    "1",
+						`v\\al`:    "1",
 						"map":      "2",
-						"pl\"ayer": "3",
+						`pl\"ayer`: "3",
 					},
 				},
 			},
@@ -159,8 +160,8 @@ func TestParser_ParseStatement(t *testing.T) {
 			s: `// Root comment line
 "Root"
 {
- attr1       "hey-ho"
- "attr2"       ho
+ "attr1"       "hey-ho"
+ "attr2"       "ho"
 }`,
 			m: map[string]interface{}{
 				"Root": map[string]interface{}{
@@ -181,19 +182,19 @@ func TestParser_ParseStatement(t *testing.T) {
    "attr2" "world"
  }
 }`,
-		m: map[string]interface{}{
-			"Root": map[string]interface{}{
-				"map": map[string]interface{}{
-					"attr1": "hello",
-					"attr2": "world",
+			m: map[string]interface{}{
+				"Root": map[string]interface{}{
+					"map": map[string]interface{}{
+						"attr1": "hello",
+						"attr2": "world",
+					},
 				},
 			},
-		},
 		},
 	}
 
 	for i, tt := range tests {
-		m, err := NewParser(strings.NewReader(tt.s)).Parse()
+		m, err := ParseReader(strings.NewReader(tt.s))
 		if !reflect.DeepEqual(tt.err, (err)) {
 			t.Errorf("%d. %q: error mismatch:\n  exp=%s\n  got=%s\n\n", i, tt.s, tt.err, err)
 		} else if tt.err == nil && !reflect.DeepEqual(tt.m, m) {
