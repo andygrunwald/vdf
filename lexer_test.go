@@ -1,41 +1,39 @@
-package vdf_test
+package vdf
 
 import (
 	"strings"
 	"testing"
-
-	"github.com/andygrunwald/vdf"
 )
 
 // Ensure the scanner can scan tokens correctly.
 func TestScanner_Scan(t *testing.T) {
 	var tests = []struct {
 		s   string
-		tok vdf.Token
+		tok Token
 		lit string
 	}{
 		// Special tokens (EOF, ILLEGAL, WS)
-		{s: ``, tok: vdf.EOF},
-		{s: `#`, tok: vdf.Illegal, lit: `#`},
-		{s: ` `, tok: vdf.WS, lit: " "},
-		{s: "\t", tok: vdf.WS, lit: "\t"},
-		{s: "\n", tok: vdf.WS, lit: "\n"},
-		{s: "\r", tok: vdf.WS, lit: "\r"},
+		{s: ``, tok: EOF},
+		{s: `#`, tok: Illegal, lit: `#`},
+		{s: ` `, tok: WS, lit: " "},
+		{s: "\t", tok: WS, lit: "\t"},
+		{s: "\n", tok: WS, lit: "\n"},
+		{s: "\r", tok: WS, lit: "\r"},
 
 		// Misc characters
-		{s: `{`, tok: vdf.CurlyBraceOpen, lit: "{"},
-		{s: `}`, tok: vdf.CurlyBraceClose, lit: "}"},
-		{s: `"`, tok: vdf.QuotationMark, lit: "\""},
-		{s: `\`, tok: vdf.EscapeSequence, lit: "\\"},
-		{s: "//", tok: vdf.CommentDoubleSlash, lit: "//"},
+		{s: `{`, tok: CurlyBraceOpen, lit: "{"},
+		{s: `}`, tok: CurlyBraceClose, lit: "}"},
+		{s: `"`, tok: QuotationMark, lit: "\""},
+		{s: `\`, tok: EscapeSequence, lit: "\\"},
+		{s: "//", tok: CommentDoubleSlash, lit: "//"},
 
 		// Identifiers
-		{s: `foo`, tok: vdf.Ident, lit: `foo`},
-		{s: `Zx12_3U_-`, tok: vdf.Ident, lit: `Zx12_3U_`},
+		{s: `foo`, tok: Ident, lit: `foo`},
+		{s: `Zx12_3U_-`, tok: Ident, lit: `Zx12_3U_`},
 	}
 
 	for i, tt := range tests {
-		s := vdf.NewScanner(strings.NewReader(tt.s))
+		s := NewScanner(strings.NewReader(tt.s))
 		tok, lit := s.Scan(false)
 		if tt.tok != tok {
 			t.Errorf("%d. %q token mismatch: exp=%q got=%q <%q>", i, tt.s, tt.tok, tok, lit)
