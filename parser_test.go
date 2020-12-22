@@ -1,9 +1,14 @@
 package vdf
 
 import (
+	"errors"
+	"io"
+	"os"
 	"reflect"
 	"strings"
 	"testing"
+
+	"github.com/stretchr/testify/require"
 )
 
 // Ensure the parser can parse strings into Statement ASTs.
@@ -199,5 +204,51 @@ func TestParser_ParseStatement(t *testing.T) {
 		} else if tt.err == nil && !reflect.DeepEqual(tt.m, m) {
 			t.Errorf("%d. %q\n\nparse mismatch:\n\nexp=%#v\n\ngot=%#v\n\n", i, tt.s, tt.m, m)
 		}
+	}
+}
+
+func TestParser_Parse(t *testing.T) {
+	getReader := func(fileName string) (io.Reader, error) {
+		return os.Open(fileName)
+	}
+
+	tests := []struct {
+		name     string
+		fileName string
+		want     func(got map[string]interface{}, err error)
+	}{
+		{
+			name:     "empty file",
+			fileName: "testdata/empty.vdf",
+			want: func(got map[string]interface{}, err error) {
+				require.Error(t, err)
+			},
+		},
+		{
+			name:     "corrupted file",
+			fileName: "testdata/corrupted.vdf",
+			want: func(got map[string]interface{}, err error) {
+				require.True(t, errors.Is(err, ErrNotValidFormat))
+			},
+		},
+		{
+			name:     "ok",
+			fileName: "testdata/ok.vdf",
+			want: func(got map[string]interface{}, err error) {
+				require.NoError(t, err)
+				saveFile := got["SaveFile"].(map[string]interface{})
+				require.Equal(t, "ciccio", saveFile["team1"])
+				require.Equal(t, "pasticcio", saveFile["team2"])
+			},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			reader, err := getReader(tt.fileName)
+			require.NoError(t, err)
+			p := NewParser(reader)
+			got, err := p.Parse()
+			tt.want(got, err)
+		})
 	}
 }

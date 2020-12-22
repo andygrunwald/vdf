@@ -79,7 +79,10 @@ func (p *Parser) Parse() (map[string]interface{}, error) {
 	key := ""
 
 	// The first part is a simple ident (as a main map key)
-	tok, lit := p.scanMapKey()
+	tok, lit, err := p.scanMapKey()
+	if err != nil {
+		return nil, err
+	}
 	if tok != Ident {
 		return nil, fmt.Errorf("Found %q, expected an ident as a first part", lit)
 	}
@@ -91,79 +94,91 @@ func (p *Parser) Parse() (map[string]interface{}, error) {
 	}
 
 	p.unscan()
-	m[key] = p.parseMap()
-
+	m[key], err = p.parseMap()
+	if err != nil {
+		return nil, err
+	}
 	return m, nil
 }
 
-func (p *Parser) scanMapKey() (Token, string) {
+func (p *Parser) scanMapKey() (Token, string, error) {
 	tok, lit := p.scanIgnoreWSAndComments()
 
 	// Get the key
 	if tok == QuotationMark {
 		return p.scanIdentSurroundedQuotationMark()
 	} else if tok == Ident {
-		return tok, lit
+		return tok, lit, nil
 	}
 
-	return Illegal, lit
+	return Illegal, lit, nil
 }
 
-func (p *Parser) parseMap() map[string]interface{} {
+func (p *Parser) parseMap() (map[string]interface{}, error) {
 	m := make(map[string]interface{})
 	key := ""
 
 	// The first part should be a open curly brace
 	tok, _ := p.scanIgnoreWSAndComments()
 	if tok != CurlyBraceOpen {
-		return m
+		return m, nil
 	}
-
+	var err error
 	for {
 		// At first: A key
 		tok, lit := p.scanIgnoreWSAndComments()
 		switch tok {
 		case QuotationMark:
-			_, key = p.scanIdentSurroundedQuotationMark()
+			_, key, _ = p.scanIdentSurroundedQuotationMark()
 		case Ident:
 			key = lit
 		case CurlyBraceClose:
-			return m
+			return m, nil
 
 		case CommentDoubleSlash:
 			fmt.Println("KILLER")
 			//
-			return m
+			return m, nil
 		default:
-			return m
+			return m, nil
 		}
 
 		// After this: A value or a map again
 		tok, lit = p.scanIgnoreWSAndComments()
 		switch tok {
 		case QuotationMark:
-			_, m[key] = p.scanIdentSurroundedQuotationMark()
+			_, m[key], err = p.scanIdentSurroundedQuotationMark()
+			if err != nil {
+				return nil, err
+			}
 		case Ident:
 			m[key] = lit
 		case CurlyBraceOpen:
 			p.unscan()
-			mergeMap(m, p.parseMap(), key)
+			m1, err := p.parseMap()
+			if err != nil {
+				return nil, err
+			}
+			mergeMap(m, m1, key)
 		case CurlyBraceClose:
-			return m
+			return m, nil
 		default:
-			return m
+			return m, nil
 		}
 	}
 }
 
-func (p *Parser) scanIdentSurroundedQuotationMark() (Token, string) {
+func (p *Parser) scanIdentSurroundedQuotationMark() (Token, string, error) {
 	var buf bytes.Buffer
 	escaped := false
-
+	terminated := false
 	for {
 		tok, lit := p.scan(true)
-
+		if tok == EOF && !terminated {
+			return tok, "", ErrNotValidFormat
+		}
 		if tok == QuotationMark && escaped == false {
+			terminated = true
 			// We don`t unscan here, because
 			// we don`t need this quotation mark anymore.
 			break
@@ -193,7 +208,7 @@ func (p *Parser) scanIdentSurroundedQuotationMark() (Token, string) {
 		}
 	}
 
-	return Ident, buf.String()
+	return Ident, buf.String(), nil
 }
 
 // VDF files can contain duplicates of keys, when this occurs we need to merge the existing map and the returned map
