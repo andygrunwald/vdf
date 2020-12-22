@@ -129,7 +129,10 @@ func (p *Parser) parseMap() (map[string]interface{}, error) {
 		tok, lit := p.scanIgnoreWSAndComments()
 		switch tok {
 		case QuotationMark:
-			_, key, _ = p.scanIdentSurroundedQuotationMark()
+			_, key, err = p.scanIdentSurroundedQuotationMark()
+			if err != nil {
+				return nil, err
+			}
 		case Ident:
 			key = lit
 		case CurlyBraceClose:
