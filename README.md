@@ -2,7 +2,6 @@
 
 [![GoDoc](https://godoc.org/github.com/andygrunwald/vdf?status.svg)](https://pkg.go.dev/github.com/andygrunwald/vdf)
 [![Go Report Card](https://goreportcard.com/badge/github.com/andygrunwald/vdf)](https://goreportcard.com/report/github.com/andygrunwald/vdf)
-[![Coverage Status](https://coveralls.io/repos/github/andygrunwald/vdf/badge.svg?branch=master)](https://coveralls.io/github/andygrunwald/vdf?branch=master)
 
 A Lexer and Parser for [Valves Data Format (known as vdf)](https://developer.valvesoftware.com/wiki/KeyValues) written in Go.
 
