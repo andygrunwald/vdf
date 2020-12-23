@@ -77,9 +77,6 @@ jobs:
       - name: Run staticcheck
         run: make staticcheck
 
-      - name: Run Unit tests.
-        run: make test
-
   unittesting:
     name: unit testing (Go ${{ matrix.go }})
     runs-on: ubuntu-20.04
