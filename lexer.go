@@ -37,16 +37,16 @@ func (s *Scanner) Scan(respectWhitespace bool) (tok Token, lit string) {
 	ch := s.read()
 
 	// If we see whitespace then consume all contiguous whitespace.
-	if respectWhitespace == false && (isWhitespace(ch) || isLineEnding(ch)) {
+	if !respectWhitespace && (isWhitespace(ch) || isLineEnding(ch)) {
 		s.unread()
 		return s.scanWhitespace()
 
 		// If we see a whitespace, return it
-	} else if respectWhitespace == true && isWhitespace(ch) {
+	} else if respectWhitespace && isWhitespace(ch) {
 		return WS, string(ch)
 
 		// If we see a line ending, return it
-	} else if respectWhitespace == true && isLineEnding(ch) {
+	} else if respectWhitespace && isLineEnding(ch) {
 		return EOL, string(ch)
 
 		// If we see a letter then consume as an ident or reserved word.

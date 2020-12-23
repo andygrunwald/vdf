@@ -84,13 +84,13 @@ func (p *Parser) Parse() (map[string]interface{}, error) {
 		return nil, err
 	}
 	if tok != Ident {
-		return nil, fmt.Errorf("Found %q, expected an ident as a first part", lit)
+		return nil, fmt.Errorf("found %q, expected an ident as a first part", lit)
 	}
 	key = lit
 
 	tok, lit = p.scanIgnoreWSAndComments()
 	if tok != CurlyBraceOpen {
-		return nil, fmt.Errorf("Found %q, expected an ident as a first part", lit)
+		return nil, fmt.Errorf("found %q, expected an ident as a first part", lit)
 	}
 
 	p.unscan()
@@ -180,7 +180,7 @@ func (p *Parser) scanIdentSurroundedQuotationMark() (Token, string, error) {
 		if tok == EOF && !terminated {
 			return tok, "", ErrNotValidFormat
 		}
-		if tok == QuotationMark && escaped == false {
+		if tok == QuotationMark && !escaped {
 			terminated = true
 			// We don`t unscan here, because
 			// we don`t need this quotation mark anymore.
@@ -189,13 +189,13 @@ func (p *Parser) scanIdentSurroundedQuotationMark() (Token, string, error) {
 
 		// If the current character is escaped and it is NOT an escape sequence
 		// set character handling back to normal.
-		if escaped == true && tok != EscapeSequence {
+		if escaped && tok != EscapeSequence {
 			escaped = false
 		}
 
 		// If we have an escape sequence and the current state is not escaped
 		// mark the next character as escaped.
-		if tok == EscapeSequence && escaped == false {
+		if tok == EscapeSequence && !escaped {
 			escaped = true
 			continue
 		}
@@ -206,7 +206,7 @@ func (p *Parser) scanIdentSurroundedQuotationMark() (Token, string, error) {
 		// reset the character handing.
 		// This is only triggered if you want to add a \ into a key or a value.
 		// Then you have to add "\\".
-		if escaped == true && tok == EscapeSequence {
+		if escaped && tok == EscapeSequence {
 			escaped = false
 		}
 	}
