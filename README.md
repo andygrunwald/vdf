@@ -10,7 +10,7 @@ A Lexer and Parser for [Valves Data Format (known as vdf)](https://developer.val
 It is go gettable
 
 ```
-$ go get github.com/andygrunwald/vdf
+$ go get github.com/andygrunwald/vdf@master
 ```
     
 (optional) to run unit / example tests:
