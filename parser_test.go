@@ -36,6 +36,7 @@ func TestParser_ParseStatement(t *testing.T) {
 			s: `"Root"
 {
  "attr1"       "hey-ho"
+
  "attr2"       "ho-hey"
  "map1"
  {
