@@ -48,7 +48,7 @@ func (p *Parser) scanIgnoreWSAndComments() (Token, string) {
 	tok, lit := p.scan(false)
 
 	// If we have a whitespace, just continue scanning until the next token appears
-	if tok == WS {
+	for tok == WS || tok == EOL {
 		tok, lit = p.scan(false)
 	}
 
