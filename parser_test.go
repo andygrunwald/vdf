@@ -253,3 +253,101 @@ func TestParser_Parse(t *testing.T) {
 		})
 	}
 }
+
+func FuzzParser_Parse(f *testing.F) {
+	testcases := []string{
+		`"Example"
+{
+	"TimeNextStatsReport"      "1234567890"
+	"ContentStatsID"           "-7123456789012345678"
+}`,
+		`"Root"
+{
+ "attr1"       "hey-ho"
+
+ "attr2"       "ho-hey"
+ "map1"
+ {
+   "foo"       "Q79v5tbar"
+ }
+ "data"
+ {
+   "val"       "1"
+   "map"       "2"
+   "player"    "3"
+ }
+}`,
+		`"Root"
+{
+ attr1       "hey-ho"
+ "attr2"       ho
+ "map1"
+ {
+   "foo"       "Q79v5tbar"
+ }
+ "data"
+ {
+   "v\\al"       "1"
+   "map"       "2"
+   "pl\"ayer"    "3"
+ }
+}`,
+		`"Root"
+{
+ attr1       "hey-ho"
+ "attr2"       ho
+ "map1"
+ {
+   // This is a comment
+   "foo"       "Q79v5tbar"
+ }
+ "data"
+ {
+   "v\\al"       "1"
+   "map"       "2"
+   "pl\"ayer"    "3"
+ }
+}`,
+		`"Root"
+{
+ attr1       "hey-ho"
+ "attr2"       ho
+ "map1"
+ {
+   // Comment line first
+   // Comment line second
+   "foo"       "Q79v5tbar"
+   // Comment line third
+ }
+ "data"
+ {
+   "v\\al"       "1"
+   "map"       "2"
+   "pl\"ayer"    "3"
+ }
+}`,
+		`// Root comment line
+"Root"
+{
+ attr1       "hey-ho"
+ "attr2"       ho
+}`,
+		`"Root"
+{
+ "map"
+ {
+   "attr1" "hello"
+ }
+ "map"
+ {
+   "attr2" "world"
+ }
+}`,
+	}
+	for _, tc := range testcases {
+		f.Add(tc)
+	}
+	f.Fuzz(func(t *testing.T, input string) {
+		NewParser(strings.NewReader(input)).Parse()
+	})
+}
