@@ -278,6 +278,9 @@ func TestParser_Parse(t *testing.T) {
 				require.Equal(t, expected, got)
 			},
 		},
+		// Comments that start with "// my comment" are supported
+		// Broken comments like "/ my comment" are not.
+		// The file will be partially parsed.
 		{
 			name:     "broken and unsupported comment",
 			fileName: "testdata/broken_comment.cfg",
@@ -290,6 +293,15 @@ func TestParser_Parse(t *testing.T) {
 					},
 				}
 				require.Equal(t, expected, got)
+			},
+		},
+		// Each level, even the first one, requires
+		// surrounding curly braces. Intending is not enough.
+		{
+			name:     "no curly brace",
+			fileName: "testdata/no_curly_brace.vdf",
+			want: func(got map[string]interface{}, err error) {
+				require.Error(t, err)
 			},
 		},
 	}
