@@ -90,7 +90,7 @@ func (p *Parser) Parse() (map[string]interface{}, error) {
 
 	tok, lit = p.scanIgnoreWSAndComments()
 	if tok != CurlyBraceOpen {
-		return nil, fmt.Errorf("found %q, expected an ident as a first part", lit)
+		return nil, fmt.Errorf("found %q, expected a curly brace as second part (to open up the first level)", lit)
 	}
 
 	p.unscan()
