@@ -135,8 +135,12 @@ func (p *Parser) parseMap() (map[string]interface{}, error) {
 			}
 		case Ident:
 			key = lit
-		case CurlyBraceClose:
-			return m, nil
+
+			// The default statement would also cover tokens like:
+			//	- CommentDoubleSlash
+			//		|-> Should in theory never happen, because comments
+			//			are handled by scanIgnoreWSAndComments() already
+			//	- CurlyBraceClose
 		default:
 			return m, nil
 		}
@@ -158,8 +162,9 @@ func (p *Parser) parseMap() (map[string]interface{}, error) {
 				return nil, err
 			}
 			mergeMap(m, m1, key)
-		case CurlyBraceClose:
-			return m, nil
+
+			// The default statement would also cover tokens like:
+			//	- CurlyBraceClose
 		default:
 			return m, nil
 		}
