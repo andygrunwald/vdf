@@ -278,6 +278,20 @@ func TestParser_Parse(t *testing.T) {
 				require.Equal(t, expected, got)
 			},
 		},
+		{
+			name:     "broken and unsupported comment",
+			fileName: "testdata/broken_comment.cfg",
+			want: func(got map[string]interface{}, err error) {
+				require.NoError(t, err)
+				expected := map[string]interface{}{
+					"Broken Comment Sample v.1": map[string]interface{}{
+						"uri":     "http://127.0.0.1:3456",
+						"timeout": "8.0",
+					},
+				}
+				require.Equal(t, expected, got)
+			},
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
