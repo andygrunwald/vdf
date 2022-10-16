@@ -137,11 +137,6 @@ func (p *Parser) parseMap() (map[string]interface{}, error) {
 			key = lit
 		case CurlyBraceClose:
 			return m, nil
-
-		case CommentDoubleSlash:
-			fmt.Println("KILLER")
-			//
-			return m, nil
 		default:
 			return m, nil
 		}
