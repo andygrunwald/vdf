@@ -16,3 +16,11 @@ vet: ## Runs go vet
 .PHONY: test
 test: ## Runs all unit tests
 	go test -v -race ./...
+
+.PHONY: test-coverage
+test-coverage: ## Runs all unit tests + gathers code coverage
+	go test -v -race -coverprofile coverage.txt ./...
+
+.PHONY: test-coverage-html
+test-coverage-html: test-coverage ## Runs all unit tests + gathers code coverage + displays them in your default browser
+	go tool cover -html=coverage.txt
