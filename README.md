@@ -111,7 +111,7 @@ $ make test-fuzzing   # Execute the fuzzing
 ## VDF parser in other languages
 
 * PHP and JavaScript: [rossengeorgiev/vdf-parser](https://github.com/rossengeorgiev/vdf-parser)
-* PHP: [https://github.com/devinwl/keyvalues-php](devinwl/keyvalues-php)
+* PHP: [devinwl/keyvalues-php](https://github.com/devinwl/keyvalues-php)
 * PHP: [lukezbihlyj/vdf-parser](https://github.com/lukezbihlyj/vdf-parser)
 * C#: [sanmadjack/VDF](https://github.com/sanmadjack/VDF)
 * Java: [DHager/hl2parse](https://github.com/DHager/hl2parse)
