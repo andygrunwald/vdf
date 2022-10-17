@@ -44,7 +44,7 @@ jobs:
         # if: ${{ always() && github.ref == 'refs/heads/main' }}
         run: |
           cache=$(go env GOCACHE)
-          cp -R "${cache}/fuzz/github.com/andygrunwald/vdf/" ./testdata/fuzz
+          cp -R ${cache}/fuzz/github.com/andygrunwald/vdf/* ./testdata/fuzz
 
       # Commit results of fuzzing back to repository to store the new seed corpus
       - uses: stefanzweifel/git-auto-commit-action@v4
