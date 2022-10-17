@@ -90,7 +90,7 @@ func (p *Parser) Parse() (map[string]interface{}, error) {
 
 	tok, lit = p.scanIgnoreWSAndComments()
 	if tok != CurlyBraceOpen {
-		return nil, fmt.Errorf("found %q, expected an ident as a first part", lit)
+		return nil, fmt.Errorf("found %q, expected a curly brace as second part (to open up the first level)", lit)
 	}
 
 	p.unscan()
@@ -135,13 +135,12 @@ func (p *Parser) parseMap() (map[string]interface{}, error) {
 			}
 		case Ident:
 			key = lit
-		case CurlyBraceClose:
-			return m, nil
 
-		case CommentDoubleSlash:
-			fmt.Println("KILLER")
-			//
-			return m, nil
+			// The default statement would also cover tokens like:
+			//	- CommentDoubleSlash
+			//		|-> Should in theory never happen, because comments
+			//			are handled by scanIgnoreWSAndComments() already
+			//	- CurlyBraceClose
 		default:
 			return m, nil
 		}
@@ -163,8 +162,9 @@ func (p *Parser) parseMap() (map[string]interface{}, error) {
 				return nil, err
 			}
 			mergeMap(m, m1, key)
-		case CurlyBraceClose:
-			return m, nil
+
+			// The default statement would also cover tokens like:
+			//	- CurlyBraceClose
 		default:
 			return m, nil
 		}

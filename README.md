@@ -22,13 +22,17 @@ $ go test -v ./...
 
 ## Usage
 
-Given a file named `example.vdf` with content:
+Given a file named [`gamestate_integration_consolesample.cfg`](testdata/gamestate_integration_consolesample.cfg) with content:
 
 ```
-"Example"
+"Console Sample v.1"
 {
-	"TimeNextStatsReport"      "1234567890"
-	"ContentStatsID"           "-7123456789012345678"
+	"uri" 		"http://127.0.0.1:3000"
+	"timeout" 	"5.0"
+	"buffer"  	"0.1"
+	"throttle" 	"0.5"
+	"heartbeat"	"60.0"
+	[...]
 }
 ```
 
@@ -39,42 +43,59 @@ package main
 
 import (
 	"fmt"
-	"github.com/andygrunwald/vdf"
-	"log"
 	"os"
+
+	"github.com/andygrunwald/vdf"
 )
 
 func main() {
-	f, err := os.Open("./example.vdf")
+	f, err := os.Open("gamestate_integration_consolesample.cfg")
 	if err != nil {
-		log.Fatal(err)
+		panic(err)
 	}
 
 	p := vdf.NewParser(f)
 	m, err := p.Parse()
 	if err != nil {
-		log.Fatal(err)
+		panic(err)
 	}
+
 	fmt.Println(m)
 }
-
 ```
 
 And it will output:
 
 ```
 map[
-	Example:map[
-		TimeNextStatsReport:1234567890
-		ContentStatsID:-7123456789012345678
+	Console Sample v.1:map[
+		uri:http://127.0.0.1:3000
+		timeout:5.0
+		buffer:0.1
+		throttle:0.5
+		heartbeat:60.0
+		[...]
 	]
 ]
 ```
-## Inspiration
 
-The code and project idea is heavily inspired and driven by [@benbjohnson](https://github.com/benbjohnson) article [Handwritten Parsers & Lexers in Go](https://blog.gopheracademy.com/advent-2014/parsers-lexers/) and his example [sql-parser](https://github.com/benbjohnson/sql-parser). Thank you Ben!
+## Development
 
-## Parser in other languages
+### Unit testing
+
+To run the local unit tests, execute
+
+```sh
+$ make test
+```
+
+To run the local unit tests and view the unit test code coverage in your local web browser, execute
+
+```sh
+$ make test-coverage-html
+```
+
+## VDF parser in other languages
 
 * PHP and JavaScript: [rossengeorgiev/vdf-parser](https://github.com/rossengeorgiev/vdf-parser)
 * PHP: [https://github.com/devinwl/keyvalues-php](devinwl/keyvalues-php)
@@ -82,7 +103,12 @@ The code and project idea is heavily inspired and driven by [@benbjohnson](https
 * C#: [sanmadjack/VDF](https://github.com/sanmadjack/VDF)
 * Java: [DHager/hl2parse](https://github.com/DHager/hl2parse)
 * And many more: [Github search for vdf valve](https://github.com/search?p=1&q=vdf+valve&ref=searchresults&type=Repositories&utf8=%E2%9C%93)
-		
+
+## Inspiration
+
+The code is inspired by [@benbjohnson](https://github.com/benbjohnson)'s article [Handwritten Parsers & Lexers in Go](https://blog.gopheracademy.com/advent-2014/parsers-lexers/) and his example [sql-parser](https://github.com/benbjohnson/sql-parser).
+Thank you Ben!
+
 ## License
 
 This project is released under the terms of the [MIT license](http://en.wikipedia.org/wiki/MIT_License).

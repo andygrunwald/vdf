@@ -242,6 +242,68 @@ func TestParser_Parse(t *testing.T) {
 				require.Equal(t, "pasticcio", saveFile["team2"])
 			},
 		},
+		// Full example sample file from
+		// https://developer.valvesoftware.com/wiki/Counter-Strike:_Global_Offensive_Game_State_Integration#Sample_Configuration_File
+		{
+			name:     "gamestate_integration_consolesample",
+			fileName: "testdata/gamestate_integration_consolesample.cfg",
+			want: func(got map[string]interface{}, err error) {
+				require.NoError(t, err)
+				expected := map[string]interface{}{
+					"Console Sample v.1": map[string]interface{}{
+						"uri":       "http://127.0.0.1:3000",
+						"timeout":   "5.0",
+						"buffer":    "0.1",
+						"throttle":  "0.5",
+						"heartbeat": "60.0",
+						"auth": map[string]interface{}{
+							"token": "CCWJu64ZV3JHDT8hZc",
+						},
+						"output": map[string]interface{}{
+							"precision_time":     "3",
+							"precision_position": "1",
+							"precision_vector":   "3",
+						},
+						"data": map[string]interface{}{
+							"provider":           "1",
+							"map":                "1",
+							"round":              "1",
+							"player_id":          "1",
+							"player_state":       "1",
+							"player_weapons":     "1",
+							"player_match_stats": "1",
+						},
+					},
+				}
+				require.Equal(t, expected, got)
+			},
+		},
+		// Comments that start with "// my comment" are supported
+		// Broken comments like "/ my comment" are not.
+		// The file will be partially parsed.
+		{
+			name:     "broken and unsupported comment",
+			fileName: "testdata/broken_comment.cfg",
+			want: func(got map[string]interface{}, err error) {
+				require.NoError(t, err)
+				expected := map[string]interface{}{
+					"Broken Comment Sample v.1": map[string]interface{}{
+						"uri":     "http://127.0.0.1:3456",
+						"timeout": "8.0",
+					},
+				}
+				require.Equal(t, expected, got)
+			},
+		},
+		// Each level, even the first one, requires
+		// surrounding curly braces. Intending is not enough.
+		{
+			name:     "no curly brace",
+			fileName: "testdata/no_curly_brace.vdf",
+			want: func(got map[string]interface{}, err error) {
+				require.Error(t, err)
+			},
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
