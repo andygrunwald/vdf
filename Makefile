@@ -24,3 +24,23 @@ test-coverage: ## Runs all unit tests + gathers code coverage
 .PHONY: test-coverage-html
 test-coverage-html: test-coverage ## Runs all unit tests + gathers code coverage + displays them in your default browser
 	go tool cover -html=coverage.txt
+
+.PHONY: test-fuzzing
+test-fuzzing: ## Runs all fuzzing tests (dev version: 60s timeout, system default settings for num worker)
+	go test -fuzz=FuzzScanner_ScanWithoutWhitespace -fuzztime 60s
+	go test -fuzz=FuzzScanner_ScanWithWhitespace -fuzztime 60s
+	go test -fuzz=FuzzParser_Parse -fuzztime 60s
+
+.PHONY: test-fuzzing-ci
+test-fuzzing-ci: ## Runs all fuzzing tests (ci version: 45s timeout, 1 worker)
+	go test -fuzz=FuzzScanner_ScanWithoutWhitespace -fuzztime 45s -parallel 1
+	go test -fuzz=FuzzScanner_ScanWithWhitespace -fuzztime 45s -parallel 1
+	go test -fuzz=FuzzParser_Parse -fuzztime 45s -parallel 1
+
+.PHONY: init-fuzzing
+init-fuzzing: ## Initializes the fuzzing data by clonsing the fuzzing corpus from andygrunwald/vdf-fuzzing-corpus
+	git clone https://github.com/andygrunwald/vdf-fuzzing-corpus.git testdata/fuzz
+
+.PHONY: clean-fuzzing
+clean-fuzzing: ## Cleans up the go test + fuzzing cache
+	go clean -cache -testcache -fuzzcache

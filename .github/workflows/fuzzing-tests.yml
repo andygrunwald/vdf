@@ -1,0 +1,60 @@
+name: Fuzzing tests
+
+on:
+  push:
+  workflow_dispatch:
+  schedule:
+    - cron: "10 1 * * *"
+
+jobs:
+  fuzzing:
+    name: Fuzzing
+    runs-on: ubuntu-20.04
+
+    steps:
+      # Checkout this repository
+      - uses: actions/checkout@v3
+      - uses: actions/setup-go@v3
+        with:
+          go-version: '1.19'
+
+      # Caching go modules to speed up the run
+      - uses: actions/cache@v3.0.11
+        with:
+          path: ~/go/pkg/mod
+          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-
+
+      # Checkout the Fuzzing seed and generated corpus
+      - uses: actions/checkout@v3
+        with:
+          repository: andygrunwald/vdf-fuzzing-corpus
+          path: testdata/fuzz
+          token: ${{ secrets.VDC_FUZZING_SEED_CORPUS }}
+
+      - name: Clear testing caches
+        run: make clean-fuzzing
+
+      - name: Run fuzzing tests (ci version)
+        run: make test-fuzzing-ci
+
+      # Copy generated corpus over, that we don't start from fresh
+      # next time we run the fuzzing cycle.
+      # Corpus that leads to a new crash has been stored to testdata/ already.
+      - name: Collect generated corpus
+        if: ${{ always() && github.ref == 'refs/heads/main' }}
+        run: |
+          cache=$(go env GOCACHE)
+          cp -R ${cache}/fuzz/github.com/andygrunwald/vdf/* ./testdata/fuzz
+
+      # Commit results of fuzzing back to repository to store the new seed corpus
+      - uses: stefanzweifel/git-auto-commit-action@v4
+        if: ${{ always() && github.ref == 'refs/heads/main' }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.VDC_FUZZING_SEED_CORPUS }}
+        with:
+          repository: testdata/fuzz
+          commit_message: Update fuzzing corpus from previous run (see https://github.com/andygrunwald/vdf)
+          branch: main
+          commit_user_name: vdf fuzzing

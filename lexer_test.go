@@ -42,3 +42,43 @@ func TestScanner_Scan(t *testing.T) {
 		}
 	}
 }
+
+func FuzzScanner_ScanWithoutWhitespace(f *testing.F) {
+	testcases := []string{
+		// Special tokens (EOF, ILLEGAL, WS)
+		``, `#`, ` `, "\t", "\n", "\r",
+
+		// Misc characters
+		`{`, `}`, `"`, `\`, "//",
+
+		// Identifiers
+		`foo`, `Zx12_3U_-`,
+	}
+	for _, tc := range testcases {
+		f.Add(tc)
+	}
+	f.Fuzz(func(t *testing.T, input string) {
+		s := NewScanner(strings.NewReader(input))
+		s.Scan(false)
+	})
+}
+
+func FuzzScanner_ScanWithWhitespace(f *testing.F) {
+	testcases := []string{
+		// Special tokens (EOF, ILLEGAL, WS)
+		``, `#`, ` `, "\t", "\n", "\r",
+
+		// Misc characters
+		`{`, `}`, `"`, `\`, "//",
+
+		// Identifiers
+		`foo`, `Zx12_3U_-`,
+	}
+	for _, tc := range testcases {
+		f.Add(tc)
+	}
+	f.Fuzz(func(t *testing.T, input string) {
+		s := NewScanner(strings.NewReader(input))
+		s.Scan(true)
+	})
+}
