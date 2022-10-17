@@ -50,10 +50,9 @@ jobs:
       # Commit results of fuzzing back to repository to store the new seed corpus
       - uses: stefanzweifel/git-auto-commit-action@v4
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.VDC_FUZZING_SEED_CORPUS }}
         with:
           repository: testdata/fuzz
-          commit_message: Update fuzzing seed corpus from previous run (see https://github.com/andygrunwald/vdf)
+          commit_message: Update fuzzing corpus from previous run (see https://github.com/andygrunwald/vdf)
           branch: main
           commit_user_name: vdf fuzzing
-          commit_author: Podcast data update bot <stehtisch@engineeringkiosk.dev>
