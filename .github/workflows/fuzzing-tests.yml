@@ -33,6 +33,9 @@ jobs:
           path: testdata/fuzz
           token: ${{ secrets.VDC_FUZZING_SEED_CORPUS }}
 
+      - name: Clear testing caches
+        run: make clean-fuzzing
+
       - name: Run fuzzing tests (ci version)
         run: make test-fuzzing-ci
 
