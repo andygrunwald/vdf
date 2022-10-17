@@ -78,11 +78,8 @@ map[
 	]
 ]
 ```
-## Inspiration
 
-The code and project idea is heavily inspired and driven by [@benbjohnson](https://github.com/benbjohnson) article [Handwritten Parsers & Lexers in Go](https://blog.gopheracademy.com/advent-2014/parsers-lexers/) and his example [sql-parser](https://github.com/benbjohnson/sql-parser). Thank you Ben!
-
-## Parser in other languages
+## VDF parser in other languages
 
 * PHP and JavaScript: [rossengeorgiev/vdf-parser](https://github.com/rossengeorgiev/vdf-parser)
 * PHP: [https://github.com/devinwl/keyvalues-php](devinwl/keyvalues-php)
@@ -90,7 +87,12 @@ The code and project idea is heavily inspired and driven by [@benbjohnson](https
 * C#: [sanmadjack/VDF](https://github.com/sanmadjack/VDF)
 * Java: [DHager/hl2parse](https://github.com/DHager/hl2parse)
 * And many more: [Github search for vdf valve](https://github.com/search?p=1&q=vdf+valve&ref=searchresults&type=Repositories&utf8=%E2%9C%93)
-		
+
+## Inspiration
+
+The code is inspired by [@benbjohnson](https://github.com/benbjohnson)'s article [Handwritten Parsers & Lexers in Go](https://blog.gopheracademy.com/advent-2014/parsers-lexers/) and his example [sql-parser](https://github.com/benbjohnson/sql-parser).
+Thank you Ben!
+
 ## License
 
 This project is released under the terms of the [MIT license](http://en.wikipedia.org/wiki/MIT_License).
