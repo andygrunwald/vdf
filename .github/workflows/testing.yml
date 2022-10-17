@@ -8,17 +8,14 @@ on:
 
 jobs:
   gofmt:
-    name: go fmt (Go ${{ matrix.go }})
+    name: go fmt
     runs-on: ubuntu-20.04
-    strategy:
-      matrix:
-        go: [ '1.19', '1.18' ]
 
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-go@v3
         with:
-          go-version: ${{ matrix.go }}
+          go-version:  '1.19'
 
       # Caching go modules to speed up the run
       - uses: actions/cache@v3.0.10
@@ -33,17 +30,14 @@ jobs:
         run: diff -u <(echo -n) <(gofmt -d -s .)
 
   govet:
-    name: go vet (Go ${{ matrix.go }})
+    name: go vet
     runs-on: ubuntu-20.04
-    strategy:
-      matrix:
-        go: [ '1.19', '1.18' ]
 
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-go@v3
         with:
-          go-version: ${{ matrix.go }}
+          go-version: '1.19'
 
       # Caching go modules to speed up the run
       - uses: actions/cache@v3.0.10
@@ -57,17 +51,14 @@ jobs:
         run: make vet
 
   staticcheck:
-    name: staticcheck (Go ${{ matrix.go }})
+    name: staticcheck
     runs-on: ubuntu-20.04
-    strategy:
-      matrix:
-        go: [ '1.19', '1.18' ]
 
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-go@v3
         with:
-          go-version: ${{ matrix.go }}
+          go-version: '1.19'
 
       # Caching go modules to speed up the run
       - uses: actions/cache@v3.0.10
@@ -82,14 +73,14 @@ jobs:
         with:
           version: "2022.1"
           install-go: false
-          cache-key: ${{ matrix.go }}
+          cache-key: staticcheck
 
   unittesting:
     name: unit testing (Go ${{ matrix.go }})
     runs-on: ubuntu-20.04
     strategy:
       matrix:
-        go: [ '1.19', '1.18' ]
+        go: [ '1.19', '1.18', '1.17', '1.16','1.15' ]
 
     steps:
       - uses: actions/checkout@v3
