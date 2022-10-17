@@ -79,6 +79,22 @@ map[
 ]
 ```
 
+## Development
+
+### Unit testing
+
+To run the local unit tests, execute
+
+```sh
+$ make test
+```
+
+To run the local unit tests and view the unit test code coverage in your local web browser, execute
+
+```sh
+$ make test-coverage-html
+```
+
 ## VDF parser in other languages
 
 * PHP and JavaScript: [rossengeorgiev/vdf-parser](https://github.com/rossengeorgiev/vdf-parser)
