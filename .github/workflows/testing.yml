@@ -96,5 +96,13 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-go-
 
+      # Checkout the Fuzzing seed and generated corpus
+      # Classical unit tests execute the fuzzing tests as well,
+      # but mainly with the pre-existing corpus.
+      - uses: actions/checkout@v3
+        with:
+          repository: andygrunwald/vdf-fuzzing-corpus
+          path: testdata/fuzz
+
       - name: Run Unit tests.
         run: make test
