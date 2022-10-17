@@ -39,6 +39,14 @@ jobs:
         # This is exactly what we want.
         continue-on-error: true
 
+      # Copy generated corpus over, that we don't start from fresh
+      # next time we run the fuzzing cycle.
+      # Corpus that leads to a new crash has been stored to testdata/ already.
+      - name: Collect generated corpus
+        run: |
+          cache=$(go env GOCACHE)
+          cp -R "${cache}/fuzz/github.com/andygrunwald/vdf/Fuzz* ./testdata/fuzz
+
       # Commit results of fuzzing back to repository to store the new seed corpus
       - uses: stefanzweifel/git-auto-commit-action@v4
         env:
