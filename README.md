@@ -95,6 +95,19 @@ To run the local unit tests and view the unit test code coverage in your local w
 $ make test-coverage-html
 ```
 
+### Fuzzing tests
+
+This library implements [Go fuzzing](https://go.dev/security/fuzz/).
+The generated fuzzing corpus is stored in [andygrunwald/vdf-fuzzing-corpus](https://github.com/andygrunwald/vdf-fuzzing-corpus/), to avoid blowing up the size of this repository.
+
+To run fuzzing locally, execute
+
+```sh
+$ make init-fuzzing   # Clone the corpus into testdata/fuzz
+$ make clean-fuzzing  # Clean the local fuzzing cache
+$ make test-fuzzing   # Execute the fuzzing
+```
+
 ## VDF parser in other languages
 
 * PHP and JavaScript: [rossengeorgiev/vdf-parser](https://github.com/rossengeorgiev/vdf-parser)
