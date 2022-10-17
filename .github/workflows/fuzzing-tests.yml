@@ -35,6 +35,8 @@ jobs:
 
       - name: Run fuzzing tests (with timeout)
         run: make test-fuzzing
+        env:
+          GOMAXPROCS: 1 # otherwise, oom-killer kills fuzzer too often
 
       # Copy generated corpus over, that we don't start from fresh
       # next time we run the fuzzing cycle.
