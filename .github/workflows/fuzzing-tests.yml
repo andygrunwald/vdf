@@ -1,0 +1,47 @@
+name: Fuzzing tests
+
+on:
+  push:
+  workflow_dispatch:
+  schedule:
+    - cron: "10 1 * * *"
+
+jobs:
+  fuzzing:
+    name: Fuzzing
+    runs-on: ubuntu-20.04
+
+    steps:
+      # Checkout this repository
+      - uses: actions/checkout@v3
+      - uses: actions/setup-go@v3
+        with:
+          go-version: '1.19'
+
+      # Caching go modules to speed up the run
+      - uses: actions/cache@v3.0.11
+        with:
+          path: ~/go/pkg/mod
+          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-
+
+      # Checkout the Fuzzing seed corpus
+      - uses: actions/checkout@v3
+        with:
+          repository: https://github.com/andygrunwald/vdf-fuzzing-corpus.git
+          path: testdata/fuzz
+
+      - name: Run fuzzing tests (with timeout)
+        run: make test-fuzzing
+
+      # Commit results of fuzzing back to repository to store the new seed corpus
+      - uses: stefanzweifel/git-auto-commit-action@v4
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          repository: testdata/fuzz
+          commit_message: Update fuzzing seed corpus from previous run (see https://github.com/andygrunwald/vdf)
+          branch: main
+          commit_user_name: vdf fuzzing
+          commit_author: Podcast data update bot <stehtisch@engineeringkiosk.dev>
