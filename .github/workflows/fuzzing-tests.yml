@@ -34,6 +34,10 @@ jobs:
 
       - name: Run fuzzing tests (with timeout)
         run: make test-fuzzing
+        # It is ok when this step fails.
+        # Failing here means, we found a new valid fuzzing case.
+        # This is exactly what we want.
+        continue-on-error: true
 
       # Commit results of fuzzing back to repository to store the new seed corpus
       - uses: stefanzweifel/git-auto-commit-action@v4
