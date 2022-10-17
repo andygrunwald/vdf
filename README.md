@@ -22,13 +22,17 @@ $ go test -v ./...
 
 ## Usage
 
-Given a file named `example.vdf` with content:
+Given a file named [`gamestate_integration_consolesample.cfg`](testdata/gamestate_integration_consolesample.cfg) with content:
 
 ```
-"Example"
+"Console Sample v.1"
 {
-	"TimeNextStatsReport"      "1234567890"
-	"ContentStatsID"           "-7123456789012345678"
+	"uri" 		"http://127.0.0.1:3000"
+	"timeout" 	"5.0"
+	"buffer"  	"0.1"
+	"throttle" 	"0.5"
+	"heartbeat"	"60.0"
+	[...]
 }
 ```
 
@@ -39,34 +43,38 @@ package main
 
 import (
 	"fmt"
-	"github.com/andygrunwald/vdf"
-	"log"
 	"os"
+
+	"github.com/andygrunwald/vdf"
 )
 
 func main() {
-	f, err := os.Open("./example.vdf")
+	f, err := os.Open("gamestate_integration_consolesample.cfg")
 	if err != nil {
-		log.Fatal(err)
+		panic(err)
 	}
 
 	p := vdf.NewParser(f)
 	m, err := p.Parse()
 	if err != nil {
-		log.Fatal(err)
+		panic(err)
 	}
+
 	fmt.Println(m)
 }
-
 ```
 
 And it will output:
 
 ```
 map[
-	Example:map[
-		TimeNextStatsReport:1234567890
-		ContentStatsID:-7123456789012345678
+	Console Sample v.1:map[
+		uri:http://127.0.0.1:3000
+		timeout:5.0
+		buffer:0.1
+		throttle:0.5
+		heartbeat:60.0
+		[...]
 	]
 ]
 ```
