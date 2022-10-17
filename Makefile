@@ -24,3 +24,9 @@ test-coverage: ## Runs all unit tests + gathers code coverage
 .PHONY: test-coverage-html
 test-coverage-html: test-coverage ## Runs all unit tests + gathers code coverage + displays them in your default browser
 	go tool cover -html=coverage.txt
+
+.PHONY: test-fuzzing
+test-fuzzing: ## Runs all unit fuzzing tests (each test with a timeout)
+	go test -fuzz=FuzzScanner_ScanWithoutWhitespace -fuzztime 45s
+	go test -fuzz=FuzzScanner_ScanWithWhitespace -fuzztime 45s
+	go test -fuzz=FuzzParser_Parse -fuzztime 45s
