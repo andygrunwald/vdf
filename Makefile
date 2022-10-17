@@ -30,3 +30,7 @@ test-fuzzing: ## Runs all unit fuzzing tests (each test with a timeout)
 	go test -fuzz=FuzzScanner_ScanWithoutWhitespace -fuzztime 45s
 	go test -fuzz=FuzzScanner_ScanWithWhitespace -fuzztime 45s
 	go test -fuzz=FuzzParser_Parse -fuzztime 45s
+
+.PHONY: init-fuzzing
+init-fuzzing: ## Initializes the fuzzing data by clonsing the fuzzing corpus from andygrunwald/vdf-fuzzing-corpus
+	git clone https://github.com/andygrunwald/vdf-fuzzing-corpus.git testdata/fuzz
