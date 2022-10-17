@@ -40,13 +40,15 @@ jobs:
       # next time we run the fuzzing cycle.
       # Corpus that leads to a new crash has been stored to testdata/ already.
       - name: Collect generated corpus
-        #if: ${{ always() && github.ref == 'refs/heads/main' }}
+        if: ${{ always() }}
+        # if: ${{ always() && github.ref == 'refs/heads/main' }}
         run: |
           cache=$(go env GOCACHE)
           cp -R "${cache}/fuzz/github.com/andygrunwald/vdf/" ./testdata/fuzz
 
       # Commit results of fuzzing back to repository to store the new seed corpus
       - uses: stefanzweifel/git-auto-commit-action@v4
+        if: ${{ always() }}
         #if: ${{ always() && github.ref == 'refs/heads/main' }}
         env:
           GITHUB_TOKEN: ${{ secrets.VDC_FUZZING_SEED_CORPUS }}
