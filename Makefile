@@ -34,3 +34,7 @@ test-fuzzing: ## Runs all unit fuzzing tests (each test with a timeout)
 .PHONY: init-fuzzing
 init-fuzzing: ## Initializes the fuzzing data by clonsing the fuzzing corpus from andygrunwald/vdf-fuzzing-corpus
 	git clone https://github.com/andygrunwald/vdf-fuzzing-corpus.git testdata/fuzz
+
+.PHONY: clean-fuzzing
+clean-fuzzing: ## Cleans up the go test + fuzzing cache
+	go clean -cache -testcache -fuzzcache
