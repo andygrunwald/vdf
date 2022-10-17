@@ -220,10 +220,9 @@ func mergeMap(m, r map[string]interface{}, key string) map[string]interface{} {
 		m[key] = r
 	} else {
 		for k, v := range r {
-			m[key].(map[string]interface{})[k] = v
-			//if t, ok := m[key].(map[string]interface{}); ok {
-			//	t[k] = v
-			//}
+			if t, ok := m[key].(map[string]interface{}); ok {
+				t[k] = v
+			}
 		}
 	}
 
