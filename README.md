@@ -1,7 +1,7 @@
 # vdf
 
-[![GoDoc](https://godoc.org/github.com/andygrunwald/vdf?status.svg)](https://pkg.go.dev/github.com/andygrunwald/vdf)
-[![Go Report Card](https://goreportcard.com/badge/github.com/andygrunwald/vdf)](https://goreportcard.com/report/github.com/andygrunwald/vdf)
+[![GoDoc](https://pkg.go.dev/badge/github.com/andygrunwald/vdf?utm_source=godoc)](https://pkg.go.dev/github.com/andygrunwald/vdf)
+[![Go Report Card](https://img.shields.io/badge/go%20report-A+-brightgreen.svg?style=flat)](https://goreportcard.com/report/github.com/andygrunwald/vdf)
 
 A Lexer and Parser for [Valves Data Format (known as vdf)](https://developer.valvesoftware.com/wiki/KeyValues) written in Go.
 
@@ -10,14 +10,7 @@ A Lexer and Parser for [Valves Data Format (known as vdf)](https://developer.val
 It is go gettable
 
 ```
-$ go get github.com/andygrunwald/vdf@master
-```
-    
-(optional) to run unit / example tests:
-
-```
-$ cd $GOPATH/src/github.com/andygrunwald/vdf
-$ go test -v ./...
+$ go get github.com/andygrunwald/vdf
 ```
 
 ## Usage
@@ -78,6 +71,10 @@ map[
 	]
 ]
 ```
+
+## API-Documentation
+
+The official Go package documentation can be found at https://pkg.go.dev/github.com/andygrunwald/vdf.
 
 ## Development
 
