@@ -29,7 +29,7 @@ jobs:
       # Checkout the Fuzzing seed corpus
       - uses: actions/checkout@v3
         with:
-          repository: andygrunwald/vdf-fuzzing-corpus.git
+          repository: andygrunwald/vdf-fuzzing-corpus
           path: testdata/fuzz
 
       - name: Run fuzzing tests (with timeout)
