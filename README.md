@@ -1,4 +1,4 @@
-# vdf
+# vdf: A Lexer and Parser for Valves Data Format (known as vdf)
 
 [![GoDoc](https://pkg.go.dev/badge/github.com/andygrunwald/vdf?utm_source=godoc)](https://pkg.go.dev/github.com/andygrunwald/vdf)
 [![Go Report Card](https://img.shields.io/badge/go%20report-A+-brightgreen.svg?style=flat)](https://goreportcard.com/report/github.com/andygrunwald/vdf)
