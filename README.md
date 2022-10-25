@@ -5,6 +5,20 @@
 
 A Lexer and Parser for [Valves Data Format (known as vdf)](https://developer.valvesoftware.com/wiki/KeyValues) written in Go.
 
+## Table of Contents
+
+- [Table of Contents](#table-of-contents)
+- [Installation](#installation)
+- [Usage](#usage)
+- [API-Documentation](#api-documentation)
+- [Development](#development)
+	- [Unit testing](#unit-testing)
+	- [Fuzzing tests](#fuzzing-tests)
+- [Press](#press)
+- [VDF parser in other languages](#vdf-parser-in-other-languages)
+- [Inspiration](#inspiration)
+- [License](#license)
+
 ## Installation
 
 It is go gettable
@@ -104,6 +118,10 @@ $ make init-fuzzing   # Clone the corpus into testdata/fuzz
 $ make clean-fuzzing  # Clean the local fuzzing cache
 $ make test-fuzzing   # Execute the fuzzing
 ```
+
+## Press
+
+* Podcast: [Engineering Kiosk Episode "#42 Lexer, Parser und Open Source in Counterstrike" (25th of October 2022, German Software Engineering Podcast)](https://engineeringkiosk.dev/podcast/episode/42-lexer-parser-und-open-source-in-counterstrike/?pk_campaign=github_vdf)
 
 ## VDF parser in other languages
 
