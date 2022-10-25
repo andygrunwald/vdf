@@ -105,6 +105,10 @@ $ make clean-fuzzing  # Clean the local fuzzing cache
 $ make test-fuzzing   # Execute the fuzzing
 ```
 
+## Press
+
+* Podcast: [Engineering Kiosk Episode "#42 Lexer, Parser und Open Source in Counterstrike" (25th of October 2022, German Software Engineering Podcast)](https://engineeringkiosk.dev/podcast/episode/42-lexer-parser-und-open-source-in-counterstrike/?pk_campaign=github_vdf)
+
 ## VDF parser in other languages
 
 * PHP and JavaScript: [rossengeorgiev/vdf-parser](https://github.com/rossengeorgiev/vdf-parser)
