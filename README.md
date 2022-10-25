@@ -5,6 +5,20 @@
 
 A Lexer and Parser for [Valves Data Format (known as vdf)](https://developer.valvesoftware.com/wiki/KeyValues) written in Go.
 
+## Table of Contents
+
+- [Table of Contents](#table-of-contents)
+- [Installation](#installation)
+- [Usage](#usage)
+- [API-Documentation](#api-documentation)
+- [Development](#development)
+	- [Unit testing](#unit-testing)
+	- [Fuzzing tests](#fuzzing-tests)
+- [Press](#press)
+- [VDF parser in other languages](#vdf-parser-in-other-languages)
+- [Inspiration](#inspiration)
+- [License](#license)
+
 ## Installation
 
 It is go gettable
