@@ -2,9 +2,12 @@ name: Testing
 
 on:
   push:
-  workflow_dispatch:
+    branches:
+      - main
+  pull_request:
   schedule:
-    - cron: "5 1 * * *"
+    - cron: "5 1 * * *" # Run nightly
+  workflow_dispatch:
 
 jobs:
   gofmt:
