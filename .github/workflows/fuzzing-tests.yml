@@ -16,13 +16,13 @@ jobs:
 
     steps:
       # Checkout this repository
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: actions/setup-go@v6
         with:
           go-version: ${{ matrix.go }}
 
       # Checkout the Fuzzing seed and generated corpus
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           repository: andygrunwald/vdf-fuzzing-corpus
           path: testdata/fuzz
