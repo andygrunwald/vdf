@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-24.04
     strategy:
       matrix:
-        go: [ '1.25', '1.26' ]
+        go: [stable, oldstable]
 
     steps:
       # Checkout this repository

@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-24.04
     strategy:
       matrix:
-        go: [ '1.25', '1.26' ]
+        go: [stable, oldstable]
 
     steps:
       - uses: actions/checkout@v7
@@ -32,7 +32,7 @@ jobs:
     runs-on: ubuntu-24.04
     strategy:
       matrix:
-        go: [ '1.25', '1.26' ]
+        go: [stable, oldstable]
 
     steps:
       - uses: actions/checkout@v7
@@ -48,7 +48,7 @@ jobs:
     runs-on: ubuntu-24.04
     strategy:
       matrix:
-        go: [ '1.25', '1.26' ]
+        go: [stable, oldstable]
 
     steps:
       - uses: actions/checkout@v7
@@ -59,7 +59,8 @@ jobs:
       - name: Run staticcheck
         uses: dominikh/staticcheck-action@v1.4.1
         with:
-          version: "2026.1"
+          # renovate: datasource=github-releases depName=dominikh/go-tools
+          version: "2026.2.2"
           install-go: false
           cache-key: staticcheck
 
@@ -68,7 +69,7 @@ jobs:
     runs-on: ubuntu-24.04
     strategy:
       matrix:
-        go: [ '1.25', '1.26' ]
+        go: [stable, oldstable]
 
     steps:
       - uses: actions/checkout@v7
