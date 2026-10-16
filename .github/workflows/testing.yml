@@ -59,7 +59,8 @@ jobs:
       - name: Run staticcheck
         uses: dominikh/staticcheck-action@v1.4.1
         with:
-          version: "2026.1"
+          # renovate: datasource=github-releases depName=dominikh/go-tools
+          version: "2026.2.2"
           install-go: false
           cache-key: staticcheck
 
