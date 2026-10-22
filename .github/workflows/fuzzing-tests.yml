@@ -16,13 +16,13 @@ jobs:
 
     steps:
       # Checkout this repository
-      - uses: actions/checkout@v7
-      - uses: actions/setup-go@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7
         with:
           go-version: ${{ matrix.go }}
 
       # Checkout the Fuzzing seed and generated corpus
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           repository: andygrunwald/vdf-fuzzing-corpus
           path: testdata/fuzz
@@ -44,7 +44,7 @@ jobs:
           cp -R ${cache}/fuzz/github.com/andygrunwald/vdf/* ./testdata/fuzz
 
       # Commit results of fuzzing back to repository to store the new seed corpus
-      - uses: stefanzweifel/git-auto-commit-action@v7
+      - uses: stefanzweifel/git-auto-commit-action@d0b01107b5db882071f96de5dd4b54961ea93f4c # v7
         if: ${{ always() && github.ref == 'refs/heads/main' }}
         env:
           GITHUB_TOKEN: ${{ secrets.VDC_FUZZING_SEED_CORPUS }}
