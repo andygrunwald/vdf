@@ -59,7 +59,7 @@ func (p *Parser) scanIgnoreWSAndComments() (Token, string) {
 		// Scan until the next line ending
 		for {
 			tok, _ = p.scan(true)
-			if tok == EOL {
+			if tok == EOL || tok == EOF {
 				break
 			}
 		}

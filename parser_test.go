@@ -413,3 +413,14 @@ func FuzzParser_Parse(f *testing.F) {
 		NewParser(strings.NewReader(input)).Parse()
 	})
 }
+
+// Ensure the parser returns on a comment at the end of the input or one holding a NUL byte.
+func TestParser_CommentAtEOF(t *testing.T) {
+	for _, s := range []string{
+		"\"a\" {\n// last line",
+		"\"a\" {\n//",
+		"\"a\" {\n// x\x00y\n",
+	} {
+		_, _ = NewParser(strings.NewReader(s)).Parse()
+	}
+}
