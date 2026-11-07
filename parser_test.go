@@ -413,3 +413,19 @@ func FuzzParser_Parse(f *testing.F) {
 		NewParser(strings.NewReader(input)).Parse()
 	})
 }
+
+// Ensure the parser returns on a comment at the end of the input, and that a NUL byte in a comment
+// ends the input instead of letting the rest of the comment parse as data.
+func TestParser_CommentAtEOF(t *testing.T) {
+	for _, s := range []string{
+		"\"a\" {\n// last line",
+		"\"a\" {\n//",
+	} {
+		_, _ = NewParser(strings.NewReader(s)).Parse()
+	}
+
+	m, _ := NewParser(strings.NewReader("\"a\" {\n// \x00\"leaked\" \"value\"\n}")).Parse()
+	if inner, ok := m["a"].(map[string]interface{}); ok && len(inner) != 0 {
+		t.Errorf("commented-out content after a NUL was parsed: %v", inner)
+	}
+}
